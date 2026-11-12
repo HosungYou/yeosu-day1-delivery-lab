@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>납기 검토실 · 여수 AI 실무캠프 1일차</title>
+<style>
+:root{--ink:#142b3f;--muted:#51677b;--paper:#f3f6f8;--line:#cbd7df;--blue:#075dcc;--mint:#d9eee7;--white:#fff}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;font-size:16px;line-height:1.65}header{background:#102c43;color:white;padding:22px max(24px,calc((100vw - 1160px)/2))}header p{margin:0;font-size:13px;color:#c0d2e2;letter-spacing:.06em}h1{font-size:clamp(28px,4vw,42px);letter-spacing:-.045em;line-height:1.25;margin:12px 0}header .disclosure{letter-spacing:0;color:#d4eee4;font-size:14px}main{max-width:1208px;margin:auto;padding:28px 24px 60px}h2{font-size:22px;letter-spacing:-.03em;margin:0 0 16px}h3{font-size:18px;margin:0 0 8px}.intro{display:flex;justify-content:space-between;gap:20px;align-items:start;margin-bottom:22px}.intro p{margin:0;color:var(--muted)}.time{font-size:13px;text-align:right;white-space:nowrap}.layout{display:grid;grid-template-columns:1fr 1.15fr;gap:24px}.sheet{background:white;border:1px solid var(--line);border-radius:12px;padding:26px;margin-bottom:24px}dl{display:grid;grid-template-columns:100px 1fr;gap:8px;margin:0}dt{color:var(--muted)}dd{margin:0;font-weight:600}.mail{margin:20px 0 0;border-left:3px solid var(--blue);padding:12px 16px;background:#f4f8fc}.mail p{margin:4px 0}.caption{font-size:13px;color:var(--muted)}label{display:block;font-weight:650;margin:0 0 10px}select{width:100%;padding:12px;background:white;color:var(--ink);border:1px solid #8197a9;border-radius:6px;font:inherit;margin-bottom:18px}button{font:inherit;cursor:pointer;border:1px solid var(--line);border-radius:7px;background:white;color:var(--ink);padding:10px 16px}button:hover{border-color:var(--blue)}button:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #157bd2;outline-offset:3px}button:disabled{cursor:not-allowed;opacity:.45}.alternatives{display:grid;grid-template-columns:1fr 1fr;gap:12px}.alternative{text-align:left;padding:16px;line-height:1.5;min-height:143px}.alternative strong{display:block;margin-bottom:8px;font-size:18px}.alternative small{display:block;font-size:13px;color:var(--muted);margin-top:10px}.alternative[aria-pressed=true]{border:2px solid var(--blue);background:#edf5ff;padding:15px}.result-heading{display:flex;justify-content:space-between;gap:12px;align-items:center}.result-heading h2{margin:0}.result-heading span{font-size:13px;color:var(--muted)}textarea{display:block;width:100%;resize:vertical;min-height:330px;font:inherit;font-size:15px;line-height:1.9;padding:16px;border:1px solid var(--line);border-radius:7px;margin:18px 0;color:var(--ink);background:#fbfcfd}.actions{display:flex;gap:10px;flex-wrap:wrap}.primary{background:var(--blue);border-color:var(--blue);color:white}.status{min-height:28px;font-size:14px;color:var(--blue);margin:10px 0 0}.condition{font-size:14px;background:#fff4d7;padding:12px 15px;margin:18px 0 0;border-left:3px solid #ba8800}table{border-collapse:collapse;width:100%;font-size:14px;margin-top:12px}th,td{text-align:left;vertical-align:top;padding:11px 8px;border-bottom:1px solid var(--line)}th{color:var(--muted)}code{font-size:12px;overflow-wrap:anywhere}details{margin-top:18px}summary{cursor:pointer;font-weight:650}.foot{border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font-size:13px}.checks{padding-left:22px;font-size:14px}.checks li{margin:6px 0}@media(max-width:800px){.layout{grid-template-columns:1fr}.intro{display:block}.time{text-align:left;margin-top:12px!important}.sheet{padding:20px}.alternatives{grid-template-columns:1fr}main{padding:20px 16px}header{padding:20px 18px}table{font-size:12px}th,td{padding:9px 4px}dl{grid-template-columns:85px 1fr}}@media print{header{background:white;color:black;padding:10px}.disclosure,header p{color:black!important}main{padding:10px}.layout{display:block}.sheet{break-inside:avoid}.actions,select,.alternatives{display:none}textarea{border:0;min-height:340px}.foot{margin-top:10px}}
+</style>
+</head>
+<body>
+<header><p>여수 AI 실무캠프 · 1일차 / 교육용 예제</p><h1>납기 대안 비교와 고객 답장</h1><p class="disclosure">교육용 합성 데이터 · 실시간 ERP 미연결 · AI API 미사용</p></header>
+<main>
+<div class="intro"><p>고객이 원하는 날짜와 준비된 물량을 확인하고,<br>분할 납품 또는 일괄 납품을 선택해 보세요.</p><p class="time" id="snapshot"></p></div>
+<div class="layout"><div>
+<section class="sheet" aria-labelledby="order-title"><h2 id="order-title">고객의 요청</h2><dl id="order"></dl><div class="mail"><p><strong>제목: 센서 모듈 납기 앞당김 요청</strong></p><p>주문한 120개를 11월 27일까지 받을 수 있을까요? 설치 일정이 앞당겨져 가능한 납품 방법과 일정을 알려 주세요.</p><p class="caption">남해설비 구매팀 · 교육용 메일, 실제 발송 기록 아님</p></div></section>
+<section class="sheet" aria-labelledby="choose-title"><h2 id="choose-title">먼저 확인할 조건</h2><label for="split">고객이 나누어 받는 것을 허용하나요?</label><select id="split"><option value="">선택해 주세요</option><option value="yes">예 · 준비된 물량부터 받을 수 있어요</option><option value="no">아니요 · 전량을 한 번에 받아야 해요</option></select><div class="alternatives"><button class="alternative" id="split-option" aria-pressed="false" disabled><strong>분할 납품</strong>80개 먼저, 40개 후속 납품<small>11/27 · 12/1 예상 도착</small></button><button class="alternative" id="single-option" aria-pressed="false" disabled><strong>일괄 납품</strong>120개를 한 번에 납품<small>12/1 예상 도착 · 요청일보다 늦음</small></button></div><p id="choice-help" class="caption">조건을 선택하면 대안을 선택할 수 있습니다.</p></section>
+</div><div>
+<section class="sheet" aria-labelledby="reply-title"><div class="result-heading"><h2 id="reply-title">고객 답장 초안</h2><span id="mode-label">아직 선택하지 않음</span></div><textarea id="reply" aria-label="고객 답장 초안" placeholder="분할 납품 가능 여부와 대안을 선택하면 초안이 표시됩니다."></textarea><div class="actions"><button id="copy" class="primary" disabled>초안 복사</button><button id="download" disabled>초안 파일 저장</button><button id="reset">처음으로</button></div><p id="status" class="status" role="status" aria-live="polite"></p><p class="condition" id="condition"></p><ol class="checks"><li>수량과 날짜를 아래 근거와 대조합니다.</li><li>후속 물량의 검사 해제 조건이 답장에 있는지 확인합니다.</li><li>검수한 초안만 저장합니다. 이 앱은 메일을 발송하지 않습니다.</li></ol></section>
+<section class="sheet"><h2>이 초안에 사용한 근거</h2><table><thead><tr><th scope="col">구분</th><th scope="col">수량</th><th scope="col">출하 → 도착</th></tr></thead><tbody id="evidence"></tbody></table><details><summary>주문·로트·상자 번호 살펴보기</summary><div id="trace"></div><p class="caption">개별 부품 일련번호는 생산 로트와 연결됩니다. RFID는 부품을 담은 운반 상자를 식별합니다. 상자의 관측 기록만으로 고객 수령을 확정하지 않습니다.</p></details></section>
+</div></div>
+<p class="foot">제공된 2026-11-26 기준 데이터를 이 파일 안에 넣었습니다. 새로고침해도 ERP의 새 기록을 가져오지 않습니다. 답장은 준비된 문장과 선택값을 조합하며, AI가 새 문장을 생성하지 않습니다.</p>
+</main>
+<script>
+// 실습: 이 파일 하나를 ChatGPT와 수정하고 GitHub 웹에서 저장합니다.
+// 아래 DATA는 교육용 스냅샷입니다. API 키나 실제 고객 자료를 넣지 마세요.
+const DATA = {
+  "synthetic": true,
+  "snapshotAt": "2026-11-26 09:30 KST",
+  "orderId": "SO-202611-0042",
+  "lineId": "SO-202611-0042-10",
+  "customer": "남해설비(가상)",
+  "product": "산업용 센서 모듈 SM-24",
+  "productId": "SM-24-IP67",
+  "quantity": 120,
+  "requestedArrival": "2026-11-27",
+  "ready": {
+    "quantity": 80,
+    "lot": "LOT-SM24-261118-A",
+    "departure": "2026-11-26",
+    "arrival": "2026-11-27",
+    "evidence": "출하계획 SHP-202611-0091 · 검사 RELEASED"
+  },
+  "later": {
+    "quantity": 40,
+    "lot": "LOT-SM24-261124-B",
+    "departure": "2026-11-30",
+    "arrival": "2026-12-01",
+    "evidence": "검사 해제 예상 2026-11-30 · 아직 PENDING"
+  },
+  "transitDays": 1,
+  "condition": "후속 40개는 11월 30일 검사 해제 및 운송 접수 확인을 전제로 한 예상 일정입니다."
+};
+const $ = id => document.getElementById(id);
+let selectedMode = '';
+const fullDate = value => { const [y,m,d]=value.split('-');return `${y}년 ${Number(m)}월 ${Number(d)}일`; };
+function addPair(term,value){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=term;dd.textContent=value;$('order').append(dt,dd);}
+addPair('주문번호',DATA.orderId);addPair('고객',DATA.customer);addPair('품목',DATA.product);addPair('주문수량',`${DATA.quantity}개`);addPair('요청 도착일',fullDate(DATA.requestedArrival));
+$('snapshot').textContent=`자료 기준 ${DATA.snapshotAt}\n수정 버전 기본 예제 v1`;
+$('condition').textContent=DATA.condition;
+for(const [label,batch] of [['검사 완료',DATA.ready],['검사 대기',DATA.later]]){const tr=document.createElement('tr');for(const text of [label,`${batch.quantity}개`,`${batch.departure.slice(5)} → ${batch.arrival.slice(5)} 예상`]){const td=document.createElement('td');td.textContent=text;tr.append(td);}$('evidence').append(tr);}
+for(const line of [`주문행 ${DATA.lineId}`,`완료 로트 ${DATA.ready.lot} / 부품 SM24-26-000001~000080`,`대기 로트 ${DATA.later.lot} / 부품 SM24-26-000081~000120`,'운반 상자 HU-YS-000001~000006 / 상자당 20개','상자 HU-YS-000001 · EPC E28068940000500000000001',DATA.ready.evidence,DATA.later.evidence]){const p=document.createElement('p');p.className='caption';p.textContent=line;$('trace').append(p);}
+function render(mode){
+ selectedMode=mode;
+ $('split-option').setAttribute('aria-pressed',String(mode==='split'));
+ $('single-option').setAttribute('aria-pressed',String(mode==='single'));
+ $('mode-label').textContent=mode==='split'?'분할 납품 선택':mode==='single'?'일괄 납품 선택':'아직 선택하지 않음';
+ let body='';
+ if(mode==='split')body=`분할 납품이 가능하다는 조건으로, 검사 완료된 ${DATA.ready.quantity}개는 ${fullDate(DATA.ready.departure)} 출하해 ${fullDate(DATA.ready.arrival)} 도착을 예상하고 있습니다. 나머지 ${DATA.later.quantity}개는 ${fullDate(DATA.later.departure)} 검사 해제 후 출하하여 ${fullDate(DATA.later.arrival)} 도착을 예상합니다.`;
+ if(mode==='single')body=`전량을 한 번에 받으시는 조건으로 검토했습니다. ${fullDate(DATA.requestedArrival)}까지 ${DATA.quantity}개 전량 납품은 어렵습니다. 후속 물량의 검사가 해제되면 ${fullDate(DATA.later.departure)} 전량 출하해 ${fullDate(DATA.later.arrival)} 도착하는 대안을 제안드립니다.`;
+ $('reply').value=body?`남해설비 구매팀 담당자님, 안녕하세요.\n\n주문 ${DATA.orderId}의 ${DATA.product} ${DATA.quantity}개 납기 문의를 확인했습니다.\n\n${body}\n\n${DATA.condition} 확인되는 대로 확정 일정을 다시 안내드리겠습니다.\n\n이 일정으로 진행 가능한지 회신 부탁드립니다. 감사합니다.`:'';
+ $('copy').disabled=$('download').disabled=!body;$('status').textContent='';
+}
+$('split').addEventListener('change',()=>{const value=$('split').value;$('split-option').disabled=value!=='yes';$('single-option').disabled=!value;$('choice-help').textContent=value==='no'?'분할 납품은 선택할 수 없습니다. 일괄 납품을 검토해 주세요.':value==='yes'?'두 대안을 비교한 뒤 하나를 선택해 주세요.':'조건을 선택하면 대안을 선택할 수 있습니다.';render('');});
+$('split-option').addEventListener('click',()=>render('split'));
+$('single-option').addEventListener('click',()=>render('single'));
+$('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('reply').value);$('status').textContent='초안을 복사했습니다. 근거 대조 후 결과 양식에 붙여 넣으세요.';}catch(e){$('reply').focus();$('reply').select();$('status').textContent='초안이 선택됐습니다. Ctrl+C 또는 ⌘C로 복사해 주세요.';}});
+$('download').addEventListener('click',()=>{const url=URL.createObjectURL(new Blob([$('reply').value],{type:'text/plain;charset=utf-8'}));const link=document.createElement('a');link.href=url;link.download=`고객답장_${DATA.orderId}_${selectedMode}.txt`;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);$('status').textContent='초안 파일을 저장했습니다.';});
+$('reset').addEventListener('click',()=>{$('split').value='';$('split').dispatchEvent(new Event('change'));});
+</script>
+</body></html>
